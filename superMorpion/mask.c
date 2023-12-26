@@ -16,14 +16,13 @@ void read_winning_masks(uint16_t ** list)
 {
     FILE *fichier;
     long taille_fichier;
-    char *buffer;
 
     // Ouvrir le fichier en mode binaire de lecture
     fichier = fopen(WINNING_MOVES_DEST, "rb");
 
     if (fichier == NULL) {
         perror("Erreur lors de l'ouverture du fichier");
-        return 1;
+        return;
     }
 
     // Déterminer la taille du fichier
@@ -37,10 +36,10 @@ void read_winning_masks(uint16_t ** list)
     if (*list == NULL) {
         perror("Erreur lors de l'allocation de mémoire");
         fclose(fichier);
-        return 1;
+        return;
     }
     int i = 0;
-    while (fread(*list[i++], sizeof(uint16_t), 1, fichier) == 1) {
+    while (fread(&(*list)[i++], sizeof(uint16_t), 1, fichier) == 1) {
     }
     // Fermer le fichier
     fclose(fichier);
@@ -65,7 +64,7 @@ void generate_winning_masks()
         for(int j=0;j<3;j++){
             fill_square(&mask,i*3 + j);
         }
-        size_t written_elt = fwrite(mask,1,sizeof(mask),file);
+        size_t written_elt = fwrite(&mask,1,sizeof(mask),file);
         if(written_elt!=sizeof(mask))
         {
             perror("Erreur lors de l'écriture dans le fichier");
@@ -80,7 +79,7 @@ void generate_winning_masks()
         for(int j=0;j<3;j++){
             fill_square(&mask,i + j*3);
         }
-        size_t written_elt = fwrite(mask,1,sizeof(mask),file);
+        size_t written_elt = fwrite(&mask,1,sizeof(mask),file);
         if(written_elt!=sizeof(mask))
         {
             perror("Erreur lors de l'écriture dans le fichier");
@@ -93,7 +92,7 @@ void generate_winning_masks()
     for(int i=0; i<3;i++){
         mask = 0ULL;
         fill_square(&mask,i+i*3);
-        size_t written_elt = fwrite(mask,1,sizeof(mask),file);
+        size_t written_elt = fwrite(&mask,1,sizeof(mask),file);
         if(written_elt!=sizeof(mask))
         {
             perror("Erreur lors de l'écriture dans le fichier");
@@ -104,7 +103,7 @@ void generate_winning_masks()
     for(int i=0; i<3;i++){
         mask = 0ULL;
         fill_square(&mask,3-i+i*3);
-        size_t written_elt = fwrite(mask,1,sizeof(mask),file);
+        size_t written_elt = fwrite(&mask,1,sizeof(mask),file);
         if(written_elt!=sizeof(mask))
         {
             perror("Erreur lors de l'écriture dans le fichier");

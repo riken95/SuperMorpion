@@ -57,19 +57,24 @@ void show_board(board * p)
         if((j/9)%3 == 0 && j/9 > 0)
             printf("___________");
         if(is_filled(masque_occupe,grille))
+        {
+
             if(is_filled(p->blackMask,grille))
                 printf("X");
             else if(is_filled(p->whiteMask,grille))
                 printf("O");
             else
                 printf("=");
+        }
         else
+        {
             if(is_filled(p->listeSubBoards[i].blackMask,i+9*j))
                 printf("X");
             else if(is_filled(p->listeSubBoards[i].whiteMask,i+9*j))
                 printf("O");
             else
                 printf(" ");
+        }
         if(i==8)
             printf("\n");
     }

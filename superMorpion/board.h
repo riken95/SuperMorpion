@@ -2,7 +2,6 @@
 #define BOARD
 #include "mask.h"
 #include "move.h"
-#include <stdlib.h> //Pour le malloc et free
 
 /*
 * Définit le plateau de jeu
@@ -54,7 +53,7 @@ board * init_board();
  * @retval None
  *
 */
-void show_board(board * p)
+void show_board(board * p);
 
 
 /**

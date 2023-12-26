@@ -2,6 +2,7 @@
 #define MASK
 #include <stdint.h> //Pour les uint16_t
 #include <stdio.h>  //Pour écrire et lire dans des fichiers
+#include <stdlib.h> //Pour les malloc
 #define WINNING_MOVES_DEST "./winning_masks.bin"
 
 

@@ -1,5 +1,6 @@
 #ifndef MOVE
 #define MOVE
+#include <stdlib.h>
 
 /**
  * Gère la mécanique des coups des joueurs
