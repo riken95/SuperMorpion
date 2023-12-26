@@ -19,7 +19,7 @@
  * @retval 1 si la case est non vide, 0 sinon
  *
 */
-int is_filled(uint16_t mask, int i);
+int is_filled(const uint16_t mask, const int i);
 
 /**
  * @brief  Remplit la case d'un masque
@@ -29,7 +29,7 @@ int is_filled(uint16_t mask, int i);
  * @retval None
  *
 */
-void fill_square(uint16_t * mask, int i);
+void fill_square(uint16_t * restrict mask, const int i);
 // ============== MASQUES POUR VERIFIER SI UN JOUER A GAGNE UNE GRILLE
 
 /**
@@ -40,7 +40,7 @@ void fill_square(uint16_t * mask, int i);
  * @retval None
  *
 */
-void read_winning_masks(uint16_t ** list, int * taille);
+void read_winning_masks(uint16_t ** restrict list, int * restrict taille);
 
 /**
  * @brief  génère les masques pour vérifier si un joueur a gagné la grille

@@ -35,18 +35,18 @@ board * init_board()
 }
 
 
-void free_subBoard(subBoard * p)
+void free_subBoard(subBoard * restrict p)
 {
     free(p);
 }
 
-void free_board(board * p)
+void free_board(board * restrict p)
 {
     free(p);
 }
 
 
-void show_board(board * p)
+void show_board(const board * restrict p)
 {
     uint16_t masque_occupe = p->blackMask|p->equalMask|p->whiteMask;
     for(int j =0;j<9;j++)
@@ -177,9 +177,3 @@ int play(board * restrict b,const int m, const uint16_t * restrict list_winning_
     return 0;
 }
 
-
-/*
-XXO
-OXX
-XOO
-*/

@@ -1,6 +1,6 @@
 #include "move.h"
 
-moveStack * addMove(moveStack * stack, move i)
+moveStack * addMove(moveStack * restrict stack, const move i)
 {
     moveStack * newMove = malloc(sizeof(moveStack));
     newMove->i = i;
@@ -11,7 +11,7 @@ moveStack * addMove(moveStack * stack, move i)
 }
 
 
-move removeMove(moveStack ** stack)
+move removeMove(moveStack ** restrict stack)
 {
     //Cas où la pile est vide
     if(!stack)

@@ -54,7 +54,7 @@ board * init_board();
  * @retval None
  *
 */
-void show_board(board * p);
+void show_board(const board * restrict p);
 
 
 /**
@@ -63,7 +63,7 @@ void show_board(board * p);
  * @retval None
  *
 */
-void free_subBoard(subBoard * p);
+void free_subBoard(subBoard * restrict p);
 
 /**
  * @brief  Libère l'espace en mémoire des subBoards et du board
@@ -71,7 +71,7 @@ void free_subBoard(subBoard * p);
  * @retval None
  *
 */
-void free_board(board * p);
+void free_board(board * restrict p);
 
 /**
  * @brief  Joue le coup spécifié

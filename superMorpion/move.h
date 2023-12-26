@@ -33,7 +33,7 @@ typedef struct moveStack moveStack;
  * @retval Le pointeur vers le dernier élément de la pile
  *
 */
-moveStack * addMove(moveStack * stack, move i);
+moveStack * addMove(moveStack * restrict stack, const move i);
 
 /**
  * @brief  Dépile le move
@@ -42,7 +42,7 @@ moveStack * addMove(moveStack * stack, move i);
  * @retval renvoie le dernier move de la pile sous forme d'entier
  *
 */
-move removeMove(moveStack ** stack);
+move removeMove(moveStack ** restrict stack);
 
-void free_moveStack(moveStack ** stack);
+void free_moveStack(moveStack ** restrict stack);
 #endif
