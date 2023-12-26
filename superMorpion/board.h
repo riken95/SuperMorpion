@@ -21,6 +21,7 @@ typedef struct subBoard subBoard;
 
 struct board
 {
+    int player; //1 pour les blancs, -1 pour les noirs
     subBoard listeSubBoards[9];
     uint16_t blackMask; //Les sous-grilles gagnées par les blancs
     uint16_t whiteMask; //Les sous-grilles gagnées par les noirs
@@ -71,5 +72,17 @@ void free_subBoard(subBoard * p);
  *
 */
 void free_board(board * p);
+
+/**
+ * @brief  Joue le coup spécifié
+ * @note   
+ * @param  b:  le plateau
+ * @param  m: le nombre de 0 à 81 exclu représentant la case à jouer
+ * @param  list_winning_masks: la liste des masques binaires gagnants
+ * @param  taille_liste:  la taille de la list_winning_masks
+ * @retval 0 si tout s'est bien passé, un nombre négatif sinon
+ *
+*/
+int play(board * restrict b,const int m, const uint16_t * restrict list_winning_masks, const int taille_liste);
 
 #endif

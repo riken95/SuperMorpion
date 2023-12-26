@@ -18,3 +18,6 @@ main.o: main.c
 
 clean:
 	rm -f $(OBJ) main.o $(EXEC)
+
+run: clean all
+	./$(EXEC)

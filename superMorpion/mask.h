@@ -36,10 +36,11 @@ void fill_square(uint16_t * mask, int i);
  * @brief  Lit les masques gagnants générés dans le fichier
  * @note   list sera allouée sur le tas (malloc)
  * @param  list: pointeur vers la liste à remplir avec les masques
+ * @param  taille: pointeur vers la taille du tableau de retour
  * @retval None
  *
 */
-void read_winning_masks(uint16_t ** list);
+void read_winning_masks(uint16_t ** list, int * taille);
 
 /**
  * @brief  génère les masques pour vérifier si un joueur a gagné la grille
@@ -48,5 +49,15 @@ void read_winning_masks(uint16_t ** list);
  *
 */
 void generate_winning_masks();
+
+/**
+ * @brief Affiche le masque binaire uint16_t 
+ * @note   
+ * @param  mask: 
+ * @retval None
+ *
+*/
+void show_mask(const uint16_t mask);
+
 
 #endif
