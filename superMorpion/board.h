@@ -22,6 +22,7 @@ typedef struct subBoard subBoard;
 struct board
 {
     int player; //1 pour les blancs, -1 pour les noirs
+    int winner; //0 = égalité, 1 = les blancs gagnent, -1 = les noirs gagnent, -2 = partie en cours
     subBoard listeSubBoards[9];
     uint16_t blackMask; //Les sous-grilles gagnées par les blancs
     uint16_t whiteMask; //Les sous-grilles gagnées par les noirs
@@ -84,5 +85,16 @@ void free_board(board * restrict p);
  *
 */
 int play(board * restrict b,const int m, const uint16_t * restrict list_winning_masks, const int taille_liste);
+
+
+/**
+ * @brief  Défait le coup joué
+ * @note   
+ * @param  b: 
+ * @param  m: 
+ * @retval
+ *
+*/
+void unplay(board * restrict b,const int m);
 
 #endif

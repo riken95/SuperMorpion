@@ -30,6 +30,10 @@ int is_filled(const uint16_t mask, const int i);
  *
 */
 void fill_square(uint16_t * restrict mask, const int i);
+
+void empty_square(uint16_t * restrict mask, const int i);
+
+
 // ============== MASQUES POUR VERIFIER SI UN JOUER A GAGNE UNE GRILLE
 
 /**

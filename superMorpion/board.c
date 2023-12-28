@@ -30,6 +30,7 @@ board * init_board()
     b->whiteMask = 0ULL;
 
     b->player = 1; //Les blancs commencent
+    b->winner = -2;
     b->prevMoves = NULL;
     return b;
 }
@@ -80,15 +81,29 @@ void show_board(const board * restrict p)
     }
 }
 
+/**
+ * @brief  Détermine si la sous-grille spécifiée est complétée
+ * @note   
+ * @param  b: le plateau
+ * @param  grid_n: le numéro de la sous-grille
+ * @param  player: Si égal à 0 on vérifie pour les deux joueurs, sinon pour l'un des 2
+ * @param  list_winning_masks: La liste des masques binaires des positions gagnantes
+ * @param  taille_liste: La taille de la liste précédente
+ * @retval 0 : égalité | -2 : la grille n'est pas pleine | 1 : les blancs gagnent | -1 : les noirs gagnent
+ *
+*/
 int grid_is_filled(const board * restrict b, const int grid_n, const int player, const uint16_t * restrict list_winning_masks, const int taille_liste)
 {
     if(player == 0)//mode où on check si la grille est pleine sans avoir aucune info sur le joueur qui a joué en dernier
     {
-        uint16_t finished_grids = b->blackMask|b->equalMask|b->whiteMask;
-        if(is_filled(finished_grids,grid_n))
-        {
+        
+        if(is_filled(b->blackMask,grid_n))
+            return -1;
+        if(is_filled(b->whiteMask,grid_n))
             return 1;
-        }
+        if(is_filled(b->equalMask,grid_n))
+            return 0;
+
         for(int i= 0;i<taille_liste;i++)
         {
             if(list_winning_masks[i]==((list_winning_masks[i])&(b->listeSubBoards[grid_n].blackMask)))
@@ -101,7 +116,7 @@ int grid_is_filled(const board * restrict b, const int grid_n, const int player,
             }
         }
     }
-    else if(player==1)//Ici on part du principe que le jouer blanc vient de jouer et que la grille n'était pas pleine avant
+    else if(player==1)//Ici on part du principe que le joueur blanc vient de jouer et que la grille n'était pas pleine avant
     {
         for(int i= 0;i<taille_liste;i++)
         {
@@ -111,7 +126,7 @@ int grid_is_filled(const board * restrict b, const int grid_n, const int player,
             }
         }
     }
-    else if(player==-1)//Ici on part du principe que le jouer blanc vient de jouer et que la grille n'était pas pleine avant
+    else if(player==-1)//Ici on part du principe que le joueur noir vient de jouer et que la grille n'était pas pleine avant
     {
         for(int i= 0;i<taille_liste;i++)
         {
@@ -126,6 +141,24 @@ int grid_is_filled(const board * restrict b, const int grid_n, const int player,
         return 0; //La grille est pleine
     }
     return -2;
+}
+
+
+int game_is_over(const board * restrict b, const uint16_t * restrict list_winning_masks, const int taille_liste)
+{
+    for(int i= 0;i<taille_liste;i++)
+    {
+        if(list_winning_masks[i]==((list_winning_masks[i])&(b->whiteMask))) //Les blancs gagnent
+            return 1;
+        if(list_winning_masks[i]==((list_winning_masks[i])&(b->blackMask)))  //Les noirs gagnent
+            return -1;
+        
+        if(((b->whiteMask|b->blackMask|b->equalMask)&0x1FF)==0x1FF) //0x1FF : 9 premiers bits égaux à 1
+            return 0; //Egalité 
+    }
+    return -2; //La partie n'est pas terminée
+
+
 }
 
 int play(board * restrict b,const int m, const uint16_t * restrict list_winning_masks, const int taille_liste)
@@ -171,9 +204,27 @@ int play(board * restrict b,const int m, const uint16_t * restrict list_winning_
     default:
         break;
     }
+
+
+    if(grid_is_filled_n>-2) //S'il y a un gagnant on le spécifie
+        b->winner = game_is_over(b,list_winning_masks,taille_liste);
         
     
     b->player*=-1;//On change de joueur
     return 0;
 }
 
+
+
+
+void unplay(board * restrict b,const int m)
+{
+    int grille = m/9;
+    empty_square(&b->blackMask,grille);
+    empty_square(&b->whiteMask,grille);
+    empty_square(&b->equalMask,grille);
+    empty_square(&b->listeSubBoards[grille].blackMask,m%9);
+    empty_square(&b->listeSubBoards[grille].whiteMask,m%9);
+    b->player *= -1;
+    b->winner = -2;
+}

@@ -27,13 +27,25 @@ struct moveStack
 typedef struct moveStack moveStack;
 
 /**
- * @brief  Ajoute un move à la pile
+ * @brief  Ajoute un move en haut de la pile
  * @note   Si moveStack est NULL, initialise la pile
  * @param  moveStack: le pointeur vers la pile atcuelle
+ * @param  i:   le move à ajouter
  * @retval Le pointeur vers le dernier élément de la pile
  *
 */
-moveStack * addMove(moveStack * restrict stack, const move i);
+moveStack * addMove_top(moveStack * restrict stack, const move i);
+
+/**
+ * @brief  Ajoute le move en haut de la pile
+ * @note   Même chose que pour addMove_top mais cette fois prend le pointeur du move à ajouter
+ * @param  stack: 
+ * @param  i: 
+ * @retval 
+ *
+*/
+
+moveStack * addMove_top_ptr(moveStack * restrict stack, moveStack * restrict m);
 
 /**
  * @brief  Dépile le move
@@ -44,5 +56,13 @@ moveStack * addMove(moveStack * restrict stack, const move i);
 */
 move removeMove(moveStack ** restrict stack);
 
+/**
+ * @brief  Dépile le move maisrenvoie le pointeur non libéré
+ * @note   Permet d'accélérer le proecessus en évitant de réalouer de la mémoire pour rien
+ * @param  stack: le pointeur vers la pile (qui sera modifié vers le nouveau dernier élément)
+ * @retval renvoie le dernier move de la pile sous forme d'entier
+ *
+*/
+moveStack * removeMove_ptr(moveStack ** restrict stack);
 void free_moveStack(moveStack ** restrict stack);
 #endif
