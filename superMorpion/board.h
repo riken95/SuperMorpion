@@ -80,10 +80,11 @@ void free_board(board * restrict p);
  * @param  m: le nombre de 0 à 81 exclu représentant la case à jouer
  * @param  list_winning_masks: la liste des masques binaires gagnants
  * @param  taille_liste:  la taille de la list_winning_masks
+ * @param user_mode: si non nul, vérifie que l'entrée est correcte
  * @retval 0 si tout s'est bien passé, un nombre négatif sinon
  *
 */
-int play(board * restrict b,const int m, const uint16_t * restrict list_winning_masks, const int taille_liste);
+int play(board * restrict b,const int m, const uint16_t * restrict list_winning_masks, const int taille_liste, const int user_mode);
 
 
 /**

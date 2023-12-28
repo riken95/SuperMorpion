@@ -30,7 +30,7 @@ int main()
                 {
                     printf("Format invalide\n");
                 }else{
-                    play(b,9*grid+3*line+column_n,liste_masques,taille);
+                    play(b,9*grid+3*line+column_n,liste_masques,taille,1);
                     show_board(b);
                 }
                 
@@ -41,7 +41,7 @@ int main()
             }
             else if(sscanf(buffer,"play %d",&depth)==1)//Ordonne au programme de jouer
             {
-                play(b,computer_play(b,depth,liste_masques,taille),liste_masques,taille);
+                play(b,computer_play(b,depth,liste_masques,taille),liste_masques,taille,0);
                 show_board(b);
 
             }

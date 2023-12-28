@@ -6,10 +6,9 @@
 #define WINNING_MOVES_DEST "./winning_masks.bin"
 
 
-/**
- * Définit les opérations élémentaires sur les masques binaires
-*/
 
+
+// ===================== Macros (plus rapides qu'une fonction standard)
 
 /**
  * @brief  Permet de vérifier si oui ou non une case du masque est pleine
@@ -19,7 +18,17 @@
  * @retval 1 si la case est non vide, 0 sinon
  *
 */
-int is_filled(const uint16_t mask, const int i);
+#define is_filled(mask, i) ((mask) & (1ULL<<(i)))
+
+
+
+
+/**
+ * Définit les opérations élémentaires sur les masques binaires
+*/
+
+
+
 
 /**
  * @brief  Remplit la case d'un masque
@@ -29,9 +38,17 @@ int is_filled(const uint16_t mask, const int i);
  * @retval None
  *
 */
-void fill_square(uint16_t * restrict mask, const int i);
 
-void empty_square(uint16_t * restrict mask, const int i);
+#define fill_square(mask, i)   ( *(mask) |=  1ULL<<(i))
+
+/**
+ * @brief  Met à 0 le bit souhaité
+ * @note   
+ * @retval 
+ *
+*/
+#define empty_square(mask, i)    (*(mask) &= ~(1ULL<<(i)))
+
 
 
 // ============== MASQUES POUR VERIFIER SI UN JOUER A GAGNE UNE GRILLE

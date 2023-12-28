@@ -1,21 +1,5 @@
 #include "mask.h"
 
-int is_filled(const uint16_t mask, const int i)
-{
-    if(mask & (1ULL << i))
-        return 1;
-    return 0;
-}
-
-void fill_square(uint16_t * restrict mask, int i)
-{
-    *mask |=  1ULL<<i;
-}
-
-void empty_square(uint16_t * restrict mask, const int i)
-{
-    *mask &= ~(1ULL<<i); 
-}
 
 
 void read_winning_masks(uint16_t ** restrict list, int * restrict taille)

@@ -6,15 +6,8 @@ int eval(const board * restrict b)
     if(b->winner>-2)//La partie est terminée
         return MAX_EVAL * b->winner;
 
-    int eval = 0;
-    for(int i=0;i<9;i++)
-    {
-        if(is_filled(b->blackMask,i))
-            --eval;
-        else if(is_filled(b->whiteMask,i))
-            ++eval;
-    }
-    return eval;
+    //Fonction du compilateur GCC permettant de compter le nombre d'octets à 1
+    return __builtin_popcount(b->whiteMask)-__builtin_popcount(b->blackMask);
 
 }
 
@@ -44,7 +37,7 @@ const uint16_t * restrict list_winning_masks, const int taille_liste)
         if(!(best_eval>MAX_EVAL*b->player && filled_squares == 0ULL))//Evite de chercher dans des carrés vides et de ralentir le programme pour rien
         for(int square = 0; square<9; square ++) if(!is_filled(filled_squares,square))//Si le carré n'est pas pris
         {
-            play(b,9*grille+square,list_winning_masks,taille_liste); //On joue le coup
+            play(b,9*grille+square,list_winning_masks,taille_liste,0); //On joue le coup
             const int eval_coup = min_max_search(alpha,beta,depth-1,b,list_winning_masks,taille_liste); //On évalue la nouvelle position 
             
             unplay(b,9*grille+square); //On annule le coup
@@ -101,7 +94,7 @@ int computer_play(board * restrict b,const int max_depth, const uint16_t * restr
         if(!(best_eval>MAX_EVAL*b->player && filled_squares == 0ULL))//Evite de chercher dans des carrés vides et de ralentir le programme pour rien
         for(int square = 0; square<9; square ++) if(!is_filled(filled_squares,square))//Si le carré n'est pas pris
         {
-            play(b,9*grille+square,list_winning_masks,taille_liste); //On joue le coup
+            play(b,9*grille+square,list_winning_masks,taille_liste,0); //On joue le coup
             const int eval_coup = min_max_search(-MAX_EVAL,MAX_EVAL,max_depth,b,list_winning_masks,taille_liste); //On évalue la nouvelle position 
             unplay(b,9*grille+square); //On annule le coup
             if(eval_coup *player > best_eval)
