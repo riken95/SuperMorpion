@@ -31,7 +31,6 @@ board * init_board()
 
     b->player = 1; //Les blancs commencent
     b->winner = -2;
-    b->prevMoves = NULL;
     return b;
 }
 

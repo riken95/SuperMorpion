@@ -50,6 +50,7 @@ int main()
             }
         }
     }
+    free(liste_masques);
     free_board(b);
     return 0;
 }

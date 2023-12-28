@@ -27,7 +27,6 @@ struct board
     uint16_t blackMask; //Les sous-grilles gagnées par les blancs
     uint16_t whiteMask; //Les sous-grilles gagnées par les noirs
     uint16_t equalMask; //Les sous-grilles pù il y a match nul
-    moveStack * prevMoves;
 };
 
 typedef struct board board;
