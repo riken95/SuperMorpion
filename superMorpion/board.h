@@ -1,7 +1,6 @@
 #ifndef BOARD
 #define BOARD
 #include "mask.h"
-#include "move.h"
 
 /*
 * Définit le plateau de jeu
