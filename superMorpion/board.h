@@ -23,6 +23,7 @@ struct board
 {
     int player; //1 pour les blancs, -1 pour les noirs
     int winner; //0 = égalité, 1 = les blancs gagnent, -1 = les noirs gagnent, -2 = partie en cours
+    int last_grid; //La grille dans laquelle a joué le dernier joueur
     subBoard listeSubBoards[9];
     uint16_t blackMask; //Les sous-grilles gagnées par les blancs
     uint16_t whiteMask; //Les sous-grilles gagnées par les noirs
@@ -95,6 +96,6 @@ int play(board * restrict b,const int m, const uint16_t * restrict list_winning_
  * @retval
  *
 */
-void unplay(board * restrict b,const int m);
+void unplay(board * restrict b,const int m, const int last_lastgrid);
 
 #endif

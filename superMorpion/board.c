@@ -31,6 +31,7 @@ board * init_board()
 
     b->player = 1; //Les blancs commencent
     b->winner = -2;
+    b->last_grid = -1;
     return b;
 }
 
@@ -105,11 +106,11 @@ int grid_is_filled(const board * restrict b, const int grid_n, const int player,
 
         for(int i= 0;i<taille_liste;i++)
         {
-            if(list_winning_masks[i]==b->listeSubBoards[grid_n].blackMask)
+            if(list_winning_masks[i]==(list_winning_masks[i]&b->listeSubBoards[grid_n].blackMask))
             {
                 return -1;
             }
-            if(list_winning_masks[i]==b->listeSubBoards[grid_n].whiteMask)
+            if(list_winning_masks[i]==(list_winning_masks[i]&b->listeSubBoards[grid_n].whiteMask))
             {
                 return 1;
             }
@@ -119,7 +120,7 @@ int grid_is_filled(const board * restrict b, const int grid_n, const int player,
     {
         for(int i= 0;i<taille_liste;i++)
         {
-            if(list_winning_masks[i]==b->listeSubBoards[grid_n].whiteMask)
+            if(list_winning_masks[i]==(list_winning_masks[i]&b->listeSubBoards[grid_n].whiteMask))
             {
                 return 1;
             }
@@ -129,7 +130,7 @@ int grid_is_filled(const board * restrict b, const int grid_n, const int player,
     {
         for(int i= 0;i<taille_liste;i++)
         {
-            if(list_winning_masks[i] == b->listeSubBoards[grid_n].blackMask)
+            if(list_winning_masks[i] == (list_winning_masks[i]&b->listeSubBoards[grid_n].blackMask))
             {
                 return -1;
             }
@@ -147,9 +148,9 @@ int game_is_over(const board * restrict b, const uint16_t * restrict list_winnin
 {
     for(int i= 0;i<taille_liste;i++)
     {
-        if(list_winning_masks[i]==b->whiteMask) //Les blancs gagnent
+        if(list_winning_masks[i]==(list_winning_masks[i]&b->whiteMask)) //Les blancs gagnent
             return 1;
-        else if(list_winning_masks[i]==b->blackMask)  //Les noirs gagnent
+        else if(list_winning_masks[i]==(list_winning_masks[i]&b->blackMask))  //Les noirs gagnent
             return -1;
         
         else if(0x1FF==(b->whiteMask|b->blackMask|b->equalMask)) //0x1FF : 9 premiers bits égaux à 1
@@ -183,8 +184,16 @@ int play(board * restrict b,const int m, const uint16_t * restrict list_winning_
             printf("Cette case est déjà occupée !\n");
             return -3;
         }
+        if(b->last_grid>-1 && grille != b->last_grid)
+        {
+            printf("Vous devez jouer dans la même grille que votre adversaire !\n");
+            return -4;
+        }
     }
-    
+
+    if(b->last_grid == -1)
+        b->last_grid = grille;
+
 
     if(b->player==1)//Les blancs jouent
     {
@@ -196,16 +205,21 @@ int play(board * restrict b,const int m, const uint16_t * restrict list_winning_
         fill_square(&(b->listeSubBoards[grille].blackMask),carre);
     }
     int grid_is_filled_n = grid_is_filled(b,grille,b->player,list_winning_masks,taille_liste);
-    if(grid_is_filled_n == 1)
-        fill_square(&b->whiteMask,grille);
-    else if(grid_is_filled_n == -1)
-        fill_square(&b->blackMask,grille);
-    else if(!grid_is_filled_n)
-        fill_square(&b->equalMask,grille);
+    
 
 
     if(grid_is_filled_n>-2) //S'il y a un gagnant on le spécifie
+    {
+        if(grid_is_filled_n == 1)
+            fill_square(&b->whiteMask,grille);
+        else if(grid_is_filled_n == -1)
+            fill_square(&b->blackMask,grille);
+        else if(!grid_is_filled_n)
+        
+        fill_square(&b->equalMask,grille);
         b->winner = game_is_over(b,list_winning_masks,taille_liste);
+        b->last_grid = -1; //Le prochain joueur joue où il veut
+    }
         
     
     b->player*=-1;//On change de joueur
@@ -215,7 +229,7 @@ int play(board * restrict b,const int m, const uint16_t * restrict list_winning_
 
 
 
-void unplay(board * restrict b,const int m)
+void unplay(board * restrict b,const int m, const int last_lastgrid)
 {
     int grille = m/9;
     b->player *= -1;
@@ -231,7 +245,7 @@ void unplay(board * restrict b,const int m)
         empty_square(&b->listeSubBoards[grille].blackMask,m%9);
     }
     
-
+    b->last_grid = last_lastgrid;
     //On gagne en performances avec ce if
     if(b->winner>-2)
         b->winner = -2;
